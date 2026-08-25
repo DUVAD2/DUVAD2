@@ -1,0 +1,163 @@
+// Ember Lounge — shisha bar menu, ordering, inventory and staff tracking.
+//
+// Money is stored everywhere as integer minor units (cents). Never floats.
+// Aroma stock is tracked in grams, decremented per bowl sold.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+/// Single-row venue configuration, editable from /admin/settings.
+model Settings {
+  id               Int    @id @default(1)
+  venueName        String @default("Ember Lounge")
+  currency         String @default("EUR")
+  /// Tax rate in basis points. 1900 = 19%.
+  taxRateBp        Int    @default(1900)
+  deliveryFeeCents Int    @default(499)
+  /// Minimum basket value before delivery is offered.
+  minDeliveryCents Int    @default(1500)
+  address          String @default("")
+  phone            String @default("")
+  openingHours     String @default("")
+}
+
+model Category {
+  id       String    @id @default(cuid())
+  name     String
+  slug     String    @unique
+  /// Short line shown under the category heading on the menu.
+  blurb    String    @default("")
+  sort     Int       @default(0)
+  products Product[]
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  name        String
+  description String      @default("")
+  priceCents  Int
+  categoryId  String
+  category    Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  /// A shisha product consumes tobacco: ordering one requires picking an aroma.
+  isShisha    Boolean     @default(false)
+  /// Grams of tobacco a single bowl of this product burns through.
+  bowlGrams   Int         @default(20)
+  active      Boolean     @default(true)
+  sort        Int         @default(0)
+  items       OrderItem[]
+
+  @@index([categoryId])
+}
+
+/// A shisha tobacco flavour, and the stock the venue holds of it.
+model Aroma {
+  id            String      @id @default(cuid())
+  name          String
+  brand         String      @default("")
+  /// Fruity | Minty | Citrus | Dessert | Classic | Signature
+  profile       String      @default("Classic")
+  description   String      @default("")
+  stockGrams    Int         @default(0)
+  /// Stock at or below this level flags the aroma as low in the dashboard.
+  lowStockGrams Int         @default(100)
+  active        Boolean     @default(true)
+  sort          Int         @default(0)
+  items         OrderItem[]
+  logs          StockLog[]
+}
+
+model Employee {
+  id        String   @id @default(cuid())
+  name      String
+  /// scrypt hash of the numeric POS PIN. Never store the raw PIN.
+  pinHash   String
+  /// OWNER sees the dashboard; STAFF only sees the POS.
+  role      String   @default("STAFF")
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  orders    Order[]
+}
+
+model Table {
+  id     String  @id @default(cuid())
+  /// Short code embedded in the table QR: /t/<code>
+  code   String  @unique
+  label  String
+  seats  Int     @default(4)
+  active Boolean @default(true)
+  orders Order[]
+}
+
+model Order {
+  /// Also serves as the human-facing order number.
+  id            Int         @id @default(autoincrement())
+  /// DINE_IN (staff POS) | QR (guest at table) | PICKUP | DELIVERY
+  channel       String
+  /// OPEN | PAID | CANCELLED
+  status        String      @default("OPEN")
+  subtotalCents Int         @default(0)
+  taxCents      Int         @default(0)
+  deliveryCents Int         @default(0)
+  totalCents    Int         @default(0)
+  /// CASH | CARD | ONLINE
+  paymentMethod String?
+  /// UNPAID | PAID
+  paymentStatus String      @default("UNPAID")
+  tableId       String?
+  table         Table?      @relation(fields: [tableId], references: [id])
+  /// The employee credited with this sale.
+  employeeId    String?
+  employee      Employee?   @relation(fields: [employeeId], references: [id])
+  customerName  String?
+  customerPhone String?
+  address       String?
+  note          String?
+  stripeSessionId String?
+  createdAt     DateTime    @default(now())
+  paidAt        DateTime?
+  items         OrderItem[]
+
+  @@index([createdAt])
+  @@index([employeeId])
+  @@index([status])
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   Int
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id])
+  aromaId   String?
+  aroma     Aroma?   @relation(fields: [aromaId], references: [id])
+  /// Name snapshots, so historic orders survive menu edits.
+  name      String
+  aromaName String?
+  unitCents Int
+  qty       Int      @default(1)
+  lineCents Int
+
+  @@index([orderId])
+  @@index([aromaId])
+}
+
+/// Audit trail for every change to aroma stock.
+model StockLog {
+  id         String   @id @default(cuid())
+  aromaId    String
+  aroma      Aroma    @relation(fields: [aromaId], references: [id], onDelete: Cascade)
+  /// Negative when sold, positive when restocked.
+  deltaGrams Int
+  /// SALE | RESTOCK | ADJUSTMENT
+  reason     String
+  note       String   @default("")
+  createdAt  DateTime @default(now())
+
+  @@index([aromaId])
+  @@index([createdAt])
+}
