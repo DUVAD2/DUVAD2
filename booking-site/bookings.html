@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My bookings — Pulse Studio</title>
+    <meta name="description" content="The classes you're booked onto at Pulse Studio." />
+    <meta name="theme-color" content="#151b24" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><text y='19' font-size='20'>%F0%9F%94%A5</text></svg>"
+    />
+  </head>
+  <body data-page="bookings">
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="shell site-header__inner">
+        <a class="brand" href="index.html">
+          <svg aria-hidden="true" focusable="false" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 2 4.09 12.6a1 1 0 0 0 .77 1.64H11l-1 8 8.91-10.6a1 1 0 0 0-.77-1.64H12l1-8Z" />
+          </svg>
+          Pulse Studio
+        </a>
+        <nav class="nav" aria-label="Main">
+          <a href="index.html" data-nav="home">Home</a>
+          <a href="timetable.html" data-nav="timetable">Timetable</a>
+          <a href="bookings.html" data-nav="bookings">
+            Bookings
+            <span class="nav__count" data-booking-count hidden></span>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="shell" style="padding-block: 40px 20px">
+      <div class="head">
+        <p class="eyebrow">Your account</p>
+        <h2>My bookings</h2>
+        <p>
+          Free cancellation up to 4 hours before a class. After that, call the
+          studio so we can give your spot to someone on the list.
+        </p>
+        <div id="storage-warning"></div>
+      </div>
+
+      <div class="hero__stats" id="booking-stats" style="margin-bottom: 34px"></div>
+
+      <section style="margin-bottom: 40px">
+        <div class="head" style="margin-bottom: 18px">
+          <h3 style="font-size: 1.5rem; text-transform: uppercase">Coming up</h3>
+        </div>
+        <div class="slots" id="upcoming"></div>
+      </section>
+
+      <section id="history-section" hidden>
+        <div class="head" style="margin-bottom: 18px">
+          <h3 style="font-size: 1.5rem; text-transform: uppercase">Already done</h3>
+        </div>
+        <div class="slots" id="history"></div>
+        <p style="margin-top: 22px">
+          <button class="btn btn--ghost btn--sm" type="button" id="clear-history">
+            Clear my booking history
+          </button>
+        </p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell site-footer__inner">
+        <p>&copy; <span id="year"></span> Pulse Studio</p>
+        <p><a href="index.html">Home</a> · <a href="timetable.html">Timetable</a></p>
+      </div>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/schedule.js"></script>
+    <script src="js/store.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/bookings.js"></script>
+  </body>
+</html>

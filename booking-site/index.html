@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <!-- Never block zoom: pinch-to-zoom is an accessibility requirement. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pulse Studio — fitness classes in Manchester</title>
+    <meta
+      name="description"
+      content="Small-group fitness classes in Manchester. HIIT, strength, spin, boxing, yoga and reformer pilates. Book a spot in seconds."
+    />
+    <meta name="theme-color" content="#151b24" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><text y='19' font-size='20'>%F0%9F%94%A5</text></svg>"
+    />
+  </head>
+  <body data-page="home">
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="shell site-header__inner">
+        <a class="brand" href="index.html">
+          <svg aria-hidden="true" focusable="false" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 2 4.09 12.6a1 1 0 0 0 .77 1.64H11l-1 8 8.91-10.6a1 1 0 0 0-.77-1.64H12l1-8Z" />
+          </svg>
+          Pulse Studio
+        </a>
+        <nav class="nav" aria-label="Main">
+          <a href="index.html" data-nav="home">Home</a>
+          <a href="timetable.html" data-nav="timetable">Timetable</a>
+          <a href="bookings.html" data-nav="bookings">
+            Bookings
+            <span class="nav__count" data-booking-count hidden></span>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- ---------- Hero ---------- -->
+      <section class="shell hero">
+        <p class="eyebrow">Manchester · Since 2016</p>
+        <h1>Train hard. <em>Book easy.</em></h1>
+        <p class="hero__lead" id="hero-lead">
+          Small-group classes with real coaching — never more than 22 people in
+          the room. Pick a class, grab a spot, turn up.
+        </p>
+        <div class="hero__actions">
+          <a class="btn" href="timetable.html">See the timetable</a>
+          <a class="btn btn--ghost" href="#classes">What's on offer</a>
+        </div>
+        <div class="hero__stats" id="hero-stats"></div>
+      </section>
+
+      <!-- ---------- Next classes ---------- -->
+      <section class="section section--tint" id="next">
+        <div class="shell">
+          <div class="head">
+            <p class="eyebrow">Starting soon</p>
+            <h2>Next up on the floor</h2>
+            <p>
+              The next few classes with spaces. Booking closes 15 minutes before
+              each one starts.
+            </p>
+          </div>
+          <div class="slots" id="next-sessions"></div>
+          <p style="margin-top: 20px">
+            <a class="btn btn--ghost" href="timetable.html">Full weekly timetable</a>
+          </p>
+        </div>
+      </section>
+
+      <!-- ---------- Classes ---------- -->
+      <section class="section" id="classes">
+        <div class="shell">
+          <div class="head">
+            <p class="eyebrow">The classes</p>
+            <h2>Seven ways to work</h2>
+            <p>
+              Every class is coached start to finish and scaled to whoever turns
+              up. New to it? Yoga Flow and Mobility are the gentlest doors in.
+            </p>
+          </div>
+          <div class="grid grid--3" id="class-grid"></div>
+        </div>
+      </section>
+
+      <!-- ---------- Coaches ---------- -->
+      <section class="section section--tint" id="coaches">
+        <div class="shell">
+          <div class="head">
+            <p class="eyebrow">The team</p>
+            <h2>Who's taking it</h2>
+          </div>
+          <div class="grid grid--4" id="coach-grid"></div>
+        </div>
+      </section>
+
+      <!-- ---------- Pricing ---------- -->
+      <section class="section" id="pricing">
+        <div class="shell">
+          <div class="head">
+            <p class="eyebrow">Membership</p>
+            <h2>Pay how it suits you</h2>
+            <p>No joining fee, no minimum term, cancel from your account any time.</p>
+          </div>
+          <div class="grid grid--3" id="plan-grid"></div>
+          <p class="note">
+            Prices shown include VAT. Class packs expire 12 months from purchase.
+          </p>
+        </div>
+      </section>
+
+      <!-- ---------- Visit ---------- -->
+      <section class="section section--tint" id="visit">
+        <div class="shell">
+          <div class="head">
+            <p class="eyebrow">Find us</p>
+            <h2>Come and have a look</h2>
+          </div>
+          <div class="grid grid--3" id="visit-grid"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell site-footer__inner">
+        <p>&copy; <span id="year"></span> Pulse Studio</p>
+        <p><a href="timetable.html">Timetable</a> · <a href="bookings.html">My bookings</a></p>
+      </div>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/schedule.js"></script>
+    <script src="js/store.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/home.js"></script>
+  </body>
+</html>
